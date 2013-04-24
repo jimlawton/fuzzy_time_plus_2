@@ -7,6 +7,3 @@ pebble_app.ld
 tools
 waf
 wscript
-.cproject
-.project
-.settings
