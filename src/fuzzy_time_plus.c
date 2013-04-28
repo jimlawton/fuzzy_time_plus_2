@@ -17,10 +17,10 @@
 /* Configuration */
 //#define AM_REVERSE
 #define HOURLY_VIBE
-//#define NORMAL_FONT FONT_KEY_GOTHIC_28
-//#define BOLD_FONT FONT_KEY_GOTHIC_28_BOLD
-#define NORMAL_FONT FONT_KEY_GOTHAM_42_LIGHT
-#define BOLD_FONT FONT_KEY_GOTHAM_42_BOLD
+#define LINE1_FONT FONT_KEY_GOTHIC_28
+#define LINE2_NORMAL_FONT FONT_KEY_GOTHIC_28
+#define LINE2_BOLD_FONT FONT_KEY_GOTHAM_42_BOLD
+#define LINE3_FONT FONT_KEY_GOTHAM_42_BOLD
 /* End configuration. */
 
 #define MY_UUID { 0x5f, 0x58, 0x20, 0x2c, 0xa1, 0x7c, 0x49, 0xaa, 0xa5, 0xd9, 0xae, 0x68, 0x35, 0xf0, 0xda, 0xc3 }
@@ -104,20 +104,20 @@ void set_line2_am(void) {
     if (rect.origin.x == 0) {
         text_layer_set_text_color(&line2.layer[1], GColorBlack);
         text_layer_set_background_color(&line2.layer[1], GColorWhite);
-        text_layer_set_font(&line2.layer[1], fonts_get_system_font(BOLD_FONT));
+        text_layer_set_font(&line2.layer[1], fonts_get_system_font(LINE2_BOLD_FONT));
     } else {
         text_layer_set_text_color(&line2.layer[0], GColorBlack);
         text_layer_set_background_color(&line2.layer[0], GColorWhite);
-        text_layer_set_font(&line2.layer[0], fonts_get_system_font(BOLD_FONT));
+        text_layer_set_font(&line2.layer[0], fonts_get_system_font(LINE2_BOLD_FONT));
     }
 }
 
 void set_line2_pm(void) {
     GRect rect = layer_get_frame(&line2.layer[0].layer);
     if (rect.origin.x == 0) {
-        text_layer_set_font(&line2.layer[1], fonts_get_system_font(BOLD_FONT));
+        text_layer_set_font(&line2.layer[1], fonts_get_system_font(LINE2_BOLD_FONT));
     } else {
-        text_layer_set_font(&line2.layer[0], fonts_get_system_font(BOLD_FONT));
+        text_layer_set_font(&line2.layer[0], fonts_get_system_font(LINE2_BOLD_FONT));
     }
 }
 
@@ -126,11 +126,11 @@ void reset_line2(void) {
 //  if (rect.origin.x == 0) {
     text_layer_set_text_color(&line2.layer[1], GColorWhite);
     text_layer_set_background_color(&line2.layer[1], GColorBlack);
-    text_layer_set_font(&line2.layer[1], fonts_get_system_font(NORMAL_FONT));
+    text_layer_set_font(&line2.layer[1], fonts_get_system_font(LINE2_NORMAL_FONT));
 //  } else {
     text_layer_set_text_color(&line2.layer[0], GColorWhite);
     text_layer_set_background_color(&line2.layer[0], GColorBlack);
-    text_layer_set_font(&line2.layer[0], fonts_get_system_font(NORMAL_FONT));
+    text_layer_set_font(&line2.layer[0], fonts_get_system_font(LINE2_NORMAL_FONT));
 //  }  
 }
 
@@ -283,39 +283,39 @@ void handle_init_app(AppContextRef app_ctx) {
     text_layer_init(&line1.layer[0], GRect(0, line1_y, 144, 50));
     text_layer_set_text_color(&line1.layer[0], GColorWhite);
     text_layer_set_background_color(&line1.layer[0], GColorClear);
-    text_layer_set_font(&line1.layer[0], fonts_get_system_font(NORMAL_FONT));
+    text_layer_set_font(&line1.layer[0], fonts_get_system_font(LINE1_FONT));
     text_layer_set_text_alignment(&line1.layer[0], GTextAlignmentLeft);
 
     text_layer_init(&line1.layer[1], GRect(144, line1_y, 144, 50));
     text_layer_set_text_color(&line1.layer[1], GColorWhite);
     text_layer_set_background_color(&line1.layer[1], GColorClear);
-    text_layer_set_font(&line1.layer[1], fonts_get_system_font(NORMAL_FONT));
+    text_layer_set_font(&line1.layer[1], fonts_get_system_font(LINE1_FONT));
     text_layer_set_text_alignment(&line1.layer[1], GTextAlignmentLeft);
 
     // line2
     text_layer_init(&line2.layer[0], GRect(0, line2_y, 144, 50));
     text_layer_set_text_color(&line2.layer[0], GColorWhite);
     text_layer_set_background_color(&line2.layer[0], GColorBlack);
-    text_layer_set_font(&line2.layer[0], fonts_get_system_font(NORMAL_FONT));
+    text_layer_set_font(&line2.layer[0], fonts_get_system_font(LINE2_NORMAL_FONT));
     text_layer_set_text_alignment(&line2.layer[0], GTextAlignmentLeft);
 
     text_layer_init(&line2.layer[1], GRect(144, line2_y, 144, 50));
     text_layer_set_text_color(&line2.layer[1], GColorWhite);
     text_layer_set_background_color(&line2.layer[1], GColorBlack);
-    text_layer_set_font(&line2.layer[1], fonts_get_system_font(NORMAL_FONT));
+    text_layer_set_font(&line2.layer[1], fonts_get_system_font(LINE2_NORMAL_FONT));
     text_layer_set_text_alignment(&line2.layer[1], GTextAlignmentLeft);
 
     // line3
     text_layer_init(&line3.layer[0], GRect(0, line3_y, 144, 50));
     //text_layer_set_text_color(&line3.layer[0], GColorWhite);
     //text_layer_set_background_color(&line3.layer[0], GColorClear);
-    text_layer_set_font(&line3.layer[0], fonts_get_system_font(BOLD_FONT));
+    text_layer_set_font(&line3.layer[0], fonts_get_system_font(LINE3_FONT));
     text_layer_set_text_alignment(&line3.layer[0], GTextAlignmentLeft);
 
     text_layer_init(&line3.layer[1], GRect(144, line3_y, 144, 50));
     //text_layer_set_text_color(&line3.layer[1], GColorWhite);
     //text_layer_set_background_color(&line3.layer[1], GColorClear);
-    text_layer_set_font(&line3.layer[1], fonts_get_system_font(BOLD_FONT));
+    text_layer_set_font(&line3.layer[1], fonts_get_system_font(LINE3_FONT));
     text_layer_set_text_alignment(&line3.layer[1], GTextAlignmentLeft);
 
     //text_layer_init(&line3_bg, GRect(144, line3_y, 144, 48));
