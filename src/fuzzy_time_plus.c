@@ -17,10 +17,10 @@
 /* Configuration */
 //#define AM_REVERSE
 #define HOURLY_VIBE
-#define NORMAL_FONT FONT_KEY_GOTHIC_28
-#define BOLD_FONT FONT_KEY_GOTHIC_28_BOLD
-//#define NORMAL_FONT FONT_KEY_GOTHAM_42_LIGHT
-//#define BOLD_FONT FONT_KEY_GOTHAM_42_BOLD
+//#define NORMAL_FONT FONT_KEY_GOTHIC_28
+//#define BOLD_FONT FONT_KEY_GOTHIC_28_BOLD
+#define NORMAL_FONT FONT_KEY_GOTHAM_42_LIGHT
+#define BOLD_FONT FONT_KEY_GOTHAM_42_BOLD
 /* End configuration. */
 
 #define MY_UUID { 0x5f, 0x58, 0x20, 0x2c, 0xa1, 0x7c, 0x49, 0xaa, 0xa5, 0xd9, 0xae, 0x68, 0x35, 0xf0, 0xda, 0xc3 }
@@ -50,7 +50,7 @@ typedef struct {
 } TheTime;
 
 TextLayer topbarLayer;
-TextLayer bottombarLayer;
+//TextLayer bottombarLayer;
 TextLayer line3_bg;
 TextLine line1;
 TextLine line2;
@@ -60,7 +60,7 @@ static TheTime cur_time;
 static TheTime new_time;
 
 static char str_topbar[LINE_BUFFER_SIZE];
-static char str_bottombar[LINE_BUFFER_SIZE];
+//static char str_bottombar[LINE_BUFFER_SIZE];
 static bool busy_animating_in = false;
 static bool busy_animating_out = false;
 const int line1_y = 18;
@@ -190,7 +190,7 @@ void update_watch(PblTm* t) {
 
     //Let's update the top and bottom bar anyway - **to optimize later to only update top bar every new day.
     text_layer_set_text(&topbarLayer, str_topbar);
-    text_layer_set_text(&bottombarLayer, str_bottombar);
+    //text_layer_set_text(&bottombarLayer, str_bottombar);
 
     if (t->tm_min == 0) {
 #ifdef HOURLY_VIBE
@@ -202,6 +202,8 @@ void update_watch(PblTm* t) {
         } else {
             set_line2_am();
         }
+#else
+        set_line2_pm();
 #endif
     }
 
@@ -215,6 +217,8 @@ void update_watch(PblTm* t) {
     } else {
         set_am_style();
     }
+#else
+    set_pm_style();
 #endif
 
     // update hour only if changed
@@ -233,11 +237,11 @@ void update_watch(PblTm* t) {
 
 void init_watch(PblTm* t) {
     fuzzy_time(t->tm_hour, t->tm_min, new_time.line1, new_time.line2, new_time.line3);
-    string_format_time(str_topbar, sizeof(str_topbar), "%A | %e %b", t);
-    string_format_time(str_bottombar, sizeof(str_bottombar), " %H%M | Week %W", t);
+    string_format_time(str_topbar, sizeof(str_topbar), "%H:%M | %A | %e %b", t);
+    //string_format_time(str_bottombar, sizeof(str_bottombar), " %H%M | Week %W", t);
 
     text_layer_set_text(&topbarLayer, str_topbar);
-    text_layer_set_text(&bottombarLayer, str_bottombar);
+    //text_layer_set_text(&bottombarLayer, str_bottombar);
 
     strcpy(cur_time.line1, new_time.line1);
     strcpy(cur_time.line2, new_time.line2);
@@ -256,6 +260,9 @@ void init_watch(PblTm* t) {
     } else {
         set_am_style();
     }
+#else
+    set_line2_pm();
+    set_pm_style();
 #endif
 
     text_layer_set_text(&line1.layer[0], cur_time.line1);
@@ -322,11 +329,11 @@ void handle_init_app(AppContextRef app_ctx) {
     text_layer_set_text_alignment(&topbarLayer, GTextAlignmentCenter);
 
     // day24week
-    text_layer_init(&bottombarLayer, GRect(0, 150, 144, 18));
-    text_layer_set_text_color(&bottombarLayer, GColorWhite);
-    text_layer_set_background_color(&bottombarLayer, GColorBlack);
-    text_layer_set_font(&bottombarLayer, fonts_get_system_font(FONT_KEY_GOTHIC_14));
-    text_layer_set_text_alignment(&bottombarLayer, GTextAlignmentCenter);
+    //text_layer_init(&bottombarLayer, GRect(0, 150, 144, 18));
+    //text_layer_set_text_color(&bottombarLayer, GColorWhite);
+    //text_layer_set_background_color(&bottombarLayer, GColorBlack);
+    //text_layer_set_font(&bottombarLayer, fonts_get_system_font(FONT_KEY_GOTHIC_14));
+    //text_layer_set_text_alignment(&bottombarLayer, GTextAlignmentCenter);
 
     // Ensures time is displayed immediately (will break if NULL tick event accessed).
     // (This is why it's a good idea to have a separate routine to do the update itself.)
@@ -342,7 +349,7 @@ void handle_init_app(AppContextRef app_ctx) {
     layer_add_child(&window.layer, &line2.layer[1].layer);
     layer_add_child(&window.layer, &line1.layer[0].layer);
     layer_add_child(&window.layer, &line1.layer[1].layer);
-    layer_add_child(&window.layer, &bottombarLayer.layer);
+    //layer_add_child(&window.layer, &bottombarLayer.layer);
     layer_add_child(&window.layer, &topbarLayer.layer);
 }
 
