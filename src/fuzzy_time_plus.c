@@ -34,7 +34,7 @@ PBL_APP_INFO(MY_UUID,
 
 #define ANIMATION_DURATION 800
 #define LINE_BUFFER_SIZE 50
-#define WINDOW_NAME "fuzzy_time_plus"
+#define WINDOW_NAME "fuzzy_time_irish"
 
 Window window;
 
