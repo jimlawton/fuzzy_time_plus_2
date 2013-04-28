@@ -1,8 +1,8 @@
 #include "english_time.h"
 #include "string.h"
 
-static const char* const ONETEENS[] = {
-    "zero",
+static const char* const HOURS[] = {
+    "twelve",
     "one",
     "two",
     "three",
@@ -15,159 +15,81 @@ static const char* const ONETEENS[] = {
     "ten",
     "eleven",
     "twelve",
-    "thirteen",
-    "fourteen",
-    "fifteen",
-    "sixteen",
-    "seventeen",
-    "eighteen",
-    "nineteen"
 };
 
-static const char* const DECADES[] = { "twenty", "thirty", "forty", "fifty" };
-
-static const char* STR_TEEN = "teen";
-static const char* STR_OCLOCK = "O'Clock";
-static const char* STR_OH = "O'";
-static const char* STR_NOON = "twelve";
-static const char* STR_MIDNIGHT = "midnight";
-static const char* STR_QUARTER = "quarter";
-static const char* STR_TO = "to";
-static const char* STR_PAST = "past";
-static const char* STR_HALF = "half";
-static const char* STR_ITS = "it's";
-static const char* STR_ALMOST = "almost";
-static const char* STR_JUST = "just";
-static const char* STR_GONE = "gone";
-
-void english_time_2lines(int hours, int minutes, char* str_hour, char* str_minute) {
-    strcpy(str_hour, "");
-    strcpy(str_minute, "");
-
-    if (hours == 0) {
-        strcat(str_hour, "twelve");
-    } else {
-        if (hours > 12) {
-            hours = hours - 12;
-        }
-        strcat(str_hour, ONETEENS[hours]);
-    }
-
-    if (minutes == 0) {
-        strcat(str_minute, STR_OCLOCK);
-    } else {
-        if (minutes < 20) {
-            if (minutes < 10) {
-                strcat(str_minute, STR_OH);
-            }
-            strcat(str_minute, ONETEENS[minutes]);
-            if ((minutes == 14) || (minutes > 15)) {
-                strcpy(str_minute, ONETEENS[minutes - 10]);
-                strcat(str_minute, "\n");
-                strcat(str_minute, STR_TEEN);
-            }
-        } else {
-            strcat(str_minute, DECADES[((minutes / 10) % 10) - 2]);
-            if ((minutes % 10) > 0) {
-                strcat(str_minute, "\n");
-                strcat(str_minute, ONETEENS[minutes % 10]);
-            }
-        }
-    }
-}
-
-void english_time_3lines(int hours, int minutes, char* str_hour, char* str_minute1, char* str_minute2) {
-    strcpy(str_hour, "");
-    strcpy(str_minute1, "");
-    strcpy(str_minute2, "");
-
-    if (hours == 0) {
-        strcat(str_hour, "twelve");
-    } else {
-        if (hours > 12) {
-            hours = hours - 12;
-        }
-        strcat(str_hour, ONETEENS[hours]);
-    }
-
-    if (minutes == 0) {
-        strcat(str_minute1, STR_OCLOCK);
-    } else {
-        if (minutes < 20) {
-            if (minutes < 10) {
-                strcat(str_minute1, STR_OH);
-            }
-            strcat(str_minute1, ONETEENS[minutes]);
-            if ((minutes == 14) || (minutes > 15)) {
-                strcpy(str_minute1, ONETEENS[minutes - 10]);
-                strcpy(str_minute2, STR_TEEN);
-            }
-        } else {
-            strcat(str_minute1, DECADES[((minutes / 10) % 10) - 2]);
-            if ((minutes % 10) > 0) {
-                strcat(str_minute2, ONETEENS[minutes % 10]);
-            }
-        }
-    }
-}
+// Time      line1     line2     line3
+// ----      --------  --------  --------
+// 5:00      it's      five      o'clock
+// 5:01      just gone five      o'clock
+// 5:02-03             gone      five
+// 5:04      nearly    five past five
+// 5:05                five past five
+// 5:06      just gone five past five
+// 5:07-08   gone      five past five
+// 5:09      nearly    ten past  five
+// 5:10                ten past  five
+// ..
+// 5:44      nearly    quarter to six
+// 5:45                quarter to six
+// 5:46      just gone quarter to six
+// 5:47-48   gone      quarter to six
+// 5:49      nearly    ten to    six
+// 5:50                ten to    six
 
 void fuzzy_time(int hours, int minutes, char* line1, char* line2, char* line3) {
+    // Line 1
     strcpy(line1, "");
-    strcpy(line2, "");
-    strcpy(line3, "");
-
-    if (minutes > 0 && minutes < 5) {
-        strcat(line1, STR_JUST);
-    } else if ((minutes >= 5 && minutes < 10) || (minutes >= 55 && minutes < 58)) {
-        strcat(line1, ONETEENS[5]);
-    } else if ((minutes >= 10 && minutes < 15) || (minutes >= 50 && minutes < 55)) {
-        strcat(line1, ONETEENS[10]);
-    } else if ((minutes >= 15 && minutes < 20) || (minutes >= 45 && minutes < 50)) {
-        strcat(line1, STR_QUARTER);
-    } else if ((minutes >= 20 && minutes < 25) || (minutes >= 40 && minutes < 45)) {
-        strcat(line1, DECADES[0]);
-    } else if ((minutes >= 25 && minutes < 30) || (minutes >= 35 && minutes < 40)) {
-        strcat(line1, DECADES[0]);
-        strcat(line2, "5");
-        strcat(line2, " ");
-    } else if (minutes >= 30 && minutes < 35) {
-        strcat(line1, STR_HALF);
-    } else if (minutes >= 58 && minutes < 60) {
-        strcat(line1, STR_ALMOST);
+    if (minutes == 0) {
+        strcat(line1, "it's");
+    } else if (minutes % 5 == 1) {
+        strcat(line1, "just gone");
+    } else if (minutes % 5 > 1 && minutes % 5 < 4) {
+        strcat(line1, "gone");
+    } else if (minutes % 5 == 4) {
+        strcat(line1, "nearly");
     }
 
     if (hours > 12)
         hours -= 12;
 
-    if (minutes == 0) {
-        strcat(line1, STR_ITS);
-        if (hours == 0) {
-            strcat(line2, STR_MIDNIGHT);
-        } else if (hours == 12) {
-            strcat(line2, STR_NOON);
-        } else {
-            strcat(line2, ONETEENS[hours]);
-            strcat(line3, STR_OCLOCK);
-        }
-    } else {
-        if (minutes < 35) {
-            strcat(line2, STR_PAST);
-        } else {
+    // Line 2
+    strcpy(line2, "");
+    if (minutes == 59 || (minutes >= 0 && minutes < 4)) {
+        if (minutes == 59) {
             hours += 1;
-            if (hours == 24)
-                hours = 0;
             if (hours > 12)
                 hours -= 12;
-            strcat(line2, STR_TO);
         }
-
-        if (hours == 0) {
-            strcat(line3, STR_MIDNIGHT);
-        } else if (hours == 12) {
-            strcat(line3, STR_NOON);
+        strcat(line2, HOURS[hours]);
+    } else {
+        if ((minutes >= 4 && minutes < 9) || (minutes >= 54 && minutes < 59)) {
+            strcat(line2, "five");
+        } else if ((minutes >= 9 && minutes < 14) || (minutes >= 49 && minutes < 54)) {
+            strcat(line2, "ten");
+        } else if ((minutes >= 14 && minutes < 19) || (minutes >= 44 && minutes < 49)) {
+            strcat(line2, "quarter");
+        } else if ((minutes >= 19 && minutes < 24) || (minutes >= 39 && minutes < 44)) {
+            strcat(line2, "twenty");
+        } else if ((minutes >= 24 && minutes < 29) || (minutes >= 34 && minutes < 39)) {
+            strcat(line2, "twenty five");
+        } else if (minutes >= 29 && minutes < 34) {
+            strcat(line2, "half");
+        }
+        if (minutes < 34) {
+            strcat(line2, " past");
         } else {
-            strcat(line3, ONETEENS[hours]);
+            hours += 1;
+            if (hours > 12)
+                hours -= 12;
+            strcat(line2, " to");
         }
+    }
 
+    // Line 3
+    strcpy(line3, "");
+    if (minutes == 59 || (minutes >= 0 && minutes < 4)) {
+        strcat(line3, "o'clock");
+    } else {
+        strcat(line3, HOURS[hours]);
     }
 }
