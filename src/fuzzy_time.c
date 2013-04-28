@@ -75,7 +75,8 @@ void fuzzy_time(int hours, int minutes, char* line1, char* line2, char* line3) {
         strcpy(line2, "25 past");
         strcpy(line3, HOURS[hours]);
     } else if (minutes >= 29 && minutes < 34) {
-        strcpy(line2, "half past");
+        strcpy(line1, "half");
+        strcpy(line2, "past");
         strcpy(line3, HOURS[hours]);
     } else if (minutes >= 34 && minutes < 39) {
         strcpy(line2, "25 to");
