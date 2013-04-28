@@ -3,7 +3,7 @@
  * Simple host tester for fuzzy time.
  *
  * Compile with:
- *   # gcc -o fuzzy_time_test ./test.c ./english_time.c 
+ *   # gcc -o fuzzy_time_test ./test.c ./fuzzy_time.c
  *
  *  Created on: 28 Apr 2013
  *      Author: jiml
@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "english_time.h"
+#include "fuzzy_time.h"
 
 #define LINE_BUFFER_SIZE 50
 

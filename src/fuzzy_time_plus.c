@@ -12,7 +12,7 @@
 #include "pebble_app.h"
 #include "pebble_fonts.h"
 
-#include "english_time.h"
+#include "fuzzy_time.h"
 
 /* Configuration */
 //#define AM_REVERSE
