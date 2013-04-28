@@ -7,3 +7,4 @@ pebble_app.ld
 tools
 waf
 wscript
+fuzzy_time_test
