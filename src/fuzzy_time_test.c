@@ -2,6 +2,9 @@
  * test.c
  * Simple host tester for fuzzy time.
  *
+ * Compile with:
+ *   # gcc -o fuzzy_time_test ./test.c ./english_time.c 
+ *
  *  Created on: 28 Apr 2013
  *      Author: jiml
  */
