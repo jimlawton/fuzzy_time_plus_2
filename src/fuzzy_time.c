@@ -20,31 +20,28 @@ static const char* const HOURS[] = {
 // Time      line1     line2     line3
 // ----      --------  --------  --------
 // 5:00      it's      five      o'clock
-// 5:01      just gone five      o'clock
-// 5:02-03             gone      five
+// 5:01-03             after     five
 // 5:04      nearly    five past five
 // 5:05                five past five
-// 5:06      just gone five past five
-// 5:07-08   gone      five past five
+// 5:06-08   after     five past five
 // 5:09      nearly    ten past  five
 // 5:10                ten past  five
 // ..
 // 5:44      nearly    quarter to six
 // 5:45                quarter to six
-// 5:46      just gone quarter to six
-// 5:47-48   gone      quarter to six
+// 5:46-48   after     quarter to six
 // 5:49      nearly    ten to    six
 // 5:50                ten to    six
 
 void fuzzy_time(int hours, int minutes, char* line1, char* line2, char* line3) {
-    // Line 1
     strcpy(line1, "");
+    strcpy(line2, "");
+    strcpy(line3, "");
+
     if (minutes == 0) {
         strcat(line1, "it's");
-    } else if (minutes % 5 == 1) {
-        strcat(line1, "just gone");
-    } else if (minutes % 5 > 1 && minutes % 5 < 4) {
-        strcat(line1, "gone");
+    } else if (minutes % 5 >= 1 && minutes % 5 < 4) {
+        strcat(line1, "after");
     } else if (minutes % 5 == 4) {
         strcat(line1, "nearly");
     }
@@ -52,8 +49,6 @@ void fuzzy_time(int hours, int minutes, char* line1, char* line2, char* line3) {
     if (hours > 12)
         hours -= 12;
 
-    // Line 2
-    strcpy(line2, "");
     if (minutes == 59 || (minutes >= 0 && minutes < 4)) {
         if (minutes == 59) {
             hours += 1;
@@ -85,8 +80,6 @@ void fuzzy_time(int hours, int minutes, char* line1, char* line2, char* line3) {
         }
     }
 
-    // Line 3
-    strcpy(line3, "");
     if (minutes == 59 || (minutes >= 0 && minutes < 4)) {
         strcat(line3, "o'clock");
     } else {
