@@ -58,18 +58,17 @@ void fuzzy_time(int hours, int minutes, char* line1, char* line2, char* line3) {
         strcpy(line2, HOURS[hours]);
         strcpy(line3, "o'clock");
     } else if (minutes >= 4 && minutes < 9) {
-        strcpy(line2, "five past");
+        strcpy(line2, "5 past");
         strcpy(line3, HOURS[hours]);
     } else if (minutes >= 9 && minutes < 14) {
-        strcpy(line2, "ten past");
+        strcpy(line2, "10 past");
         strcpy(line3, HOURS[hours]);
     } else if (minutes >= 14 && minutes < 19) {
         strcpy(line1, "quarter");
         strcpy(line2, "past");
         strcpy(line3, HOURS[hours]);
     } else if (minutes >= 19 && minutes < 24) {
-        strcpy(line1, "twenty");
-        strcpy(line2, "past");
+        strcpy(line2, "20 past");
         strcpy(line3, HOURS[hours]);
     } else if (minutes >= 24 && minutes < 29) {
         strcpy(line2, "25 past");
@@ -82,18 +81,17 @@ void fuzzy_time(int hours, int minutes, char* line1, char* line2, char* line3) {
         strcpy(line2, "25 to");
         strcpy(line3, HOURS[hours]);
     } else if (minutes >= 39 && minutes < 44) {
-        strcpy(line1, "twenty");
-        strcpy(line2, "to");
+        strcpy(line2, "20 to");
         strcpy(line3, HOURS[hours]);
     } else if (minutes >= 44 && minutes < 49) {
         strcpy(line1, "quarter");
         strcpy(line2, "to");
         strcpy(line3, HOURS[hours]);
     } else if (minutes >= 49 && minutes < 54) {
-        strcpy(line2, "ten to");
+        strcpy(line2, "10 to");
         strcpy(line3, HOURS[hours]);
     } else if (minutes >= 54 && minutes < 59) {
-        strcpy(line2, "five to");
+        strcpy(line2, "5 to");
         strcpy(line3, HOURS[hours]);
     } else if (minutes == 59) {
         strcpy(line2, HOURS[hours]);
