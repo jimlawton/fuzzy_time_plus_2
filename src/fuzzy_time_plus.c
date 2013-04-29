@@ -196,7 +196,10 @@ void update_watch(PblTm* t) {
 
     if (t->tm_min == 0) {
 #ifdef HOURLY_VIBE
-        vibes_short_pulse();
+        /* No vibe during the night. */
+        if (t->tm_hour == 0 || t->tm_hour > 7) {
+            vibes_short_pulse();
+        }
 #endif
 #ifdef AM_REVERSE
         if (t->tm_hour >= 12) {
